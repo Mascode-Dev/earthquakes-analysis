@@ -39,6 +39,6 @@ B.  **Launch the application**:
 3.  **Open the Dashboard**:
     Go to `http://127.0.0.1:8051/` in your browser.
 
-## 👥 Authors
+## 5. Authors
 
 * **Jego Thomas**
