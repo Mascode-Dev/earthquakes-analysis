@@ -1,5 +1,5 @@
 import dash
-from dash import dcc, html
+from dash import dcc, html, Input, Output
 import pandas as pd
 import plotly.express as px
 
@@ -10,7 +10,8 @@ from utils import (
     earthquake_frequency_per_year,
     spatial_clustering_kmeans,
     forecast_earthquake_frequency,
-    focal_depth_vs_magnitude
+    focal_depth_vs_magnitude,
+    get_country_map
 )
 
 # =============================================================================
@@ -57,7 +58,7 @@ else:
 
 app = dash.Dash(__name__, external_stylesheets=['https://codepen.io/chriddyp/pen/bWLwgP.css'])
 server = app.server
-
+fig_choropleth = get_country_map(df)
 app.layout = html.Div([
     
     # --- Header ---
@@ -92,7 +93,20 @@ app.layout = html.Div([
                     html.Div([
                         dcc.Graph(figure=fig_depth)
                     ], style={'width': '48%', 'display': 'inline-block', 'float': 'right'})
-                ])
+                ]),
+
+                html.Hr(),
+
+                # Zone de la carte
+                dcc.Graph(
+                    id='world-map',  # ID important pour le callback
+                    figure=fig_choropleth
+                ),
+
+                html.Hr(),
+
+                # Zone d'affichage des détails (vide au début)
+                html.Div(id='country-details-container', style={'padding': '20px', 'backgroundColor': '#f9f9f9'})
             ])
         ]),
 
@@ -119,11 +133,51 @@ app.layout = html.Div([
     ])
 ], style={'fontFamily': 'Arial, sans-serif'})
 
+
+# --- Callback / (When a country is clicked on the map) ---
+@app.callback(
+    Output('country-details-container', 'children'),
+    Input('world-map', 'clickData')
+)
+def display_country_data(clickData):
+    if clickData is None:
+        return html.H3("Select a country to see details.")
+
+    # Get country name from clickData
+    country_name = clickData['points'][0]['location']
+    
+    # Filter data for the selected country
+    df_country = df[df['Country'] == country_name]
+    
+    # Compute stats (KPIs)
+    count = len(df_country)
+    avg_mag = df_country['Mag'].mean()
+    max_mag = df_country['Mag'].max()
+    
+    # Country-specific chart
+    fig_country_trend = px.histogram(df_country, x='Year', title=f"Earthquakes history for : {country_name}")
+
+    # Return the HTML content
+    return html.Div([
+        html.H2(f"Details for : {country_name}", style={'color': 'darkblue'}),
+        
+        # KPIs
+        html.Div([
+            html.Div([html.H4("Number of Earthquakes"), html.P(str(count), style={'fontSize': '24px'})], className='three columns'),
+            html.Div([html.H4("Average Magnitude"), html.P(f"{avg_mag:.2f}/10", style={'fontSize': '24px'})], className='three columns'),
+            html.Div([html.H4("Largest Earthquake"), html.P(f"{max_mag:.2f}/10", style={'fontSize': '24px'})], className='three columns'),
+        ], style={'display': 'flex', 'justifyContent': 'space-around', 'textAlign': 'center'}),
+        
+        html.Hr(),
+        
+        # Country-specific chart
+        dcc.Graph(figure=fig_country_trend)
+    ])
+
 # =============================================================================
 # 4. SERVER LAUNCH
 # =============================================================================
 
 if __name__ == '__main__':
     print("Lancement du serveur Dash...")
-    print("Ouvrez votre navigateur à l'adresse : http://127.0.0.1:8050/")
     app.run(debug=True, port=8051)
