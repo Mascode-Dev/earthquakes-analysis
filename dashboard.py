@@ -166,6 +166,8 @@ def display_country_data(clickData):
             html.Div([html.H4("Number of Earthquakes"), html.P(str(count), style={'fontSize': '24px'})], className='three columns'),
             html.Div([html.H4("Average Magnitude"), html.P(f"{avg_mag:.2f}/10", style={'fontSize': '24px'})], className='three columns'),
             html.Div([html.H4("Largest Earthquake"), html.P(f"{max_mag:.2f}/10", style={'fontSize': '24px'})], className='three columns'),
+            html.Div([html.H4("Average Deaths / earthquake"), html.P(f"{df_country['Deaths'].mean():.2f}", style={'fontSize': '24px'})], className='three columns'),
+            html.Div([html.H4("Average Damage Cost / earthquake"), html.P(f"{df_country['Damage ($Mil)'].mean():.2f} M$", style={'fontSize': '24px'})], className='three columns')
         ], style={'display': 'flex', 'justifyContent': 'space-around', 'textAlign': 'center'}),
         
         html.Hr(),
