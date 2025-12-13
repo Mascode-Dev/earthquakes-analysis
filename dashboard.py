@@ -65,7 +65,7 @@ app.layout = html.Div([
     html.Div([
         html.H1("Seismic Analysis Dashboard", style={'textAlign': 'center', 'color': '#2c3e50'}),
         html.H4("Data Science Project - Analysis & Predictions", style={'textAlign': 'center', 'color': '#7f8c8d'}),
-        html.P("Team Members: Jego, Thomas (Team Leader)", style={'textAlign': 'center', 'fontWeight': 'bold'}),
+        html.P("Team Members: Jego Thomas, Fadili Ghita, Sudhakar Ashmitaa, Dezombre Victoire", style={'textAlign': 'center', 'fontWeight': 'bold'}),
     ], style={'padding': '20px', 'backgroundColor': '#f4f6f7', 'marginBottom': '20px'}),
 
     # --- Content with Tabs ---
