@@ -21,7 +21,7 @@ This project is an interactive Data Science application developed with **Python 
 * `dashboard.py`: The main script that launches the Web server and manages the interface.
 * `utils.py`: Contains business logic, cleaning functions, Plotly charts, and ML algorithms.
 * `earthquakes.csv`: The source dataset (USGS).
-* `Jego_Earthquakes.ipynb`: Jupyter Notebook for initial exploration and research.
+* `Main.ipynb`: Jupyter Notebook for initial exploration and research.
 
 ## 4. Installation and Launch
 

@@ -9,7 +9,7 @@ import kagglehub
 from kagglehub import KaggleDatasetAdapter
 
 # ---------------------------------------------------------
-# Fonction 1 : Relation Magnitude vs Coût des dommages
+# Fonction 1 : Relation Magnitude vs Damages Cost
 # ---------------------------------------------------------
 def magnitude_vs_damage_cost(df):
     """
